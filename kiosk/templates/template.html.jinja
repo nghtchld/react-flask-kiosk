@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/res/app.js"></script>
+    <link rel="stylesheet" href="/res/style.css">
+    <link rel="shortcut icon" href="/res/favicon.ico">
+    <title>{% block title %}{% if title %}{{ title }}{% else %}Mex &amp; Co.{% endif %}{% endblock %}</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="/" id="home"><img src="/res/default.png">Mex &amp; Co.</a>
+        <a href="{{ url_for('menu') }}">Menu</a>
+        <a href="{{ url_for('cart') }}">Cart</a>
+        {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% else %}
+        <a href="{{ url_for('userpage', username=current_user.username) }}">Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+        <a class="right-nav" id="themeToggleButton">Light Theme</a>
+    </div>
+    <div class="overflow">
+        <div class="wrapper">
+            <div class="content">
+                {% if err %}
+                    <span class="error">{{ err }}</span><br>
+                {% endif %}
+
+                {% block beforecontent %}{% endblock %}
+
+                {% block content %}
+                    {% if content %}
+                        {{ content }}
+                    {% else %}
+                        <h1>Oops!</h1>
+                        <p>
+                            This page hasn't loaded properly. Please refresh.
+                        </p>
+                        <span class="subtxt">
+                            If this problem persists, please contact the site administrator.
+                        </span>
+                    {% endif %}
+                {% endblock %}
+
+                {% block aftercontent %}
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

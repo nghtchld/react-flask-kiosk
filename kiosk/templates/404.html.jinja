@@ -1,0 +1,43 @@
+{% extends "template.html.jinja" %}
+
+{% block title %}404{% endblock %}
+
+{% block beforecontent %}
+    <style>
+        #img-wizard {
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            filter: brightness(0.5);
+        }
+
+        body:not(.light) .wrapper {
+            background: #4444 !important;
+            backdrop-filter: blur(0.5em);
+        }
+
+        body.light .wrapper {
+            background: #fff4;
+            backdrop-filter: blur(0.5em);
+        }
+    </style>
+    <img src="/res/wizard.jpg" id="img-wizard">
+{% endblock %}
+
+{% block content %}
+    <h1>404 – Wizards Behind Curtains!?</h1>
+    <p>
+        "Quick! Lock the door before they see!"
+        <br>
+        – The wizard behind the curtains
+        <br>
+        <br>
+        This page doesn't exist. You have instead stumbled upon the secret wizard den.
+        <br>
+        <em><strong>Tell no one, or you will be thrown into the dungeon.</strong></em>
+    </p>
+    <p><a href="{{ url_for('index') }}">Go Back!</a></p>
+{% endblock %}

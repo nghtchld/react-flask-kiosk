@@ -1,0 +1,25 @@
+{% extends "template.html.jinja" %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    {% if order %}
+        {% for item in order %}
+            <div class="order-item" id="{{ item.id }}" food="{{ item.foodID }}">
+                <img class="order-item-image" src="{{ item.image }}" alt="">
+                <span class="order-item-name">{{ item.name }}</span>
+                <br>
+                <span class="order-item-price">${{ item.price }}</span>
+            </div>
+            <div class="order-sep"></div>
+        {% endfor %}
+    {% else %}
+        <h1>Oops!</h1>
+        <p>
+            This page hasn't loaded properly. Please refresh.
+        </p>
+        <span class="subtxt">
+            If this problem persists, please contact the site administrator.
+        </span>
+    {% endif %}
+{% endblock %}

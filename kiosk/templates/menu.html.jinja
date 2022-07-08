@@ -1,0 +1,27 @@
+{% extends "template.html.jinja" %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+    {% if menu %}
+        {% for item in menu %}
+            <a href="{{ url_for('menu_item', itemname=item[1]) }}"> 
+                <div class="order-item" id="{{ item[0] }}" food="{{ item[1] }}">
+                    <img class="order-item-image" src="{{ item[4] }}" alt="">
+                    <span class="order-item-name">{{ item[1] }}</span>
+                    <br>
+                    <span class="order-item-price">${{ item[2] }}</span>
+                </div>
+            </a>
+            <div class="order-sep"></div>
+        {% endfor %}
+    {% else %}
+        <h1>Oops!</h1>
+        <p>
+            This page hasn't loaded properly. Please refresh.
+        </p>
+        <span class="subtxt">
+            If this problem persists, please contact the site administrator.
+        </span>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,5 @@
+item,price,description,img,options
+Chicken,10,White bird meat,/res/default.png,"{'size': {'type': 'radio', 'text': 'Size', 'options': ['Small', 'Medium', 'Large']}}"
+Beef,20,Red cow meat,/res/default.png,"{'size': {'type': 'radio', 'text': 'Size', 'options': ['Small', 'Medium', 'Large']}}"
+Pork,30,Other white meat,/res/default.png,"{'size': {'type': 'radio', 'text': 'Size', 'options': ['Small', 'Medium', 'Large']}}"
+Fish,40,White sea meat,/res/default.png,"{'size': {'type': 'radio', 'text': 'Size', 'options': ['Small', 'Medium', 'Large']}}"

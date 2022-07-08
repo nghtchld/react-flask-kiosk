@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# Restaurant Kiosk: a Flask Web App
+This repo contains a [Flask](https://palletsprojects.com/p/flask/) web application with an [sqlite](https://sqlite.org/) Dev database using flask-sqlalchemy classes. It broadly follows the [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).
+# Features
+- Working flask/jinja website with templates (HTML, JS, CSS)
+- Working flask-sqlalchemy defined sqlite (dev) database setup with initial data insertion
+- Working Flask-WTF forms
+- Working clean up testform.py, main.py
+- Working session username usage (only for index atm)
+- Working menu read from db to menu page
+- Working logging uses wrappers and decorators for functions
+    see https://towardsdatascience.com/using-wrappers-to-log-in-python
+- Working Flash messages on all templates
+Up to here - see current work plan section, below:
+- TODO Ordering system using flask-sqlalchemy Classes
+- TODO Menu item customisation on order
+- TODO Receipt prodcution with Tax and Tip
+- TODO Admin Panel (Ability to create discounts, Foods and customisations )
+- TODO add Unit testing: https://realpython.com/python-testing/
+    https://code.visualstudio.com/docs/python/testing
+- TODO Containerise (Docker): https://code.visualstudio.com/docs/containers/quickstart-python
+- TODO Deploy to cloud (AWS, Azure): https://code.visualstudio.com/docs/python/python-on-azure
+https://docs.microsoft.com/en-us/azure/app-service/quickstart-python?tabs=flask%2Cwindows%2Cazure-cli%2Cvscode-deploy%2Cdeploy-instructions-azportal%2Cterminal-bash%2Cdeploy-instructions-zip-azcli&pivots=python-framework-flask
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Installation
+## Use venv for virtual environment setup
+py -m venv --prompt "flask-kiosk" --upgrade-deps c:\Users\USERNAME\.venv\flask-kiosk
 
-## Available Scripts
+## Activate virtual env and generate a better requirements.txt with pip-tools
+`C:\Users\USERNAME\.venv\flask-kiosk\Scripts\activate.bat`
 
-In the project directory, you can run:
+`pip install -r requirements.txt`
 
-### `npm start`
+`pip freeze > requirements.in`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Edit the `requirements.in` file above to only list the packages from the original requirements.txt
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`py -m piptools compile --output-file=requirements.txt requirements.in`
 
-### `npm test`
+## Create a .env file in root folder (or use ENV variables)
+a root `.env` file is needed by `/kiosk/config.py` for at least a SALT (> 8 characters long) and a DATABASE name defined. Its template is:
+    DATABASE=app.db
+    DATABASE_URL=
+    SALT=must_have_a_salt_more_than_8_chrs_long
+    SECRET_KEY=
+    PORT=
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Initialise the database
+The app uses the flask-migrate package and so the database schema is under Alembic control. The Alembic migration scripts are in the `/migrations` folder.
 
-### `npm run build`
+Before running the flask app you need to create and initialise the database.
+1. run flask db init (creates a database and sets up migrations)
+2. run flask db migrate (creates the upgrade script)
+3. run flask db upgrade (upgrades the database to the latest version)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Licence
+This project is licenced under the BSD 3-Clause licence. A full copy of this licene is in the `LICENCE` file.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Current work plan
+TODO Ordering system using flask-sqlalchemy Classes
+## Needed
+* Food details page of form 'menu\<item>'
+* Dropdown number to order selection form -> displayed on food details page
+* Do we then have to write the item selection immediately to the db?
+** or can we store in 'session' and if so how?
+** and then when do we write to the db?
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Fixes needed
+* change menu_list in route /menu to namedtuple
+* change menu.html for item loop to use namedtuple names in place of list [ints]

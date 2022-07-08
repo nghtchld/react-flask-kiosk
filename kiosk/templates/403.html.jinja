@@ -1,0 +1,98 @@
+{% extends "template.html.jinja" %}
+
+{% block title %}403{% endblock %}
+
+{% block beforecontent %}
+    <style>
+        #img-wizard {
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            filter: brightness(0.5);
+        }
+
+        body:not(.light) .wrapper {
+            background: #4444 !important;
+            backdrop-filter: blur(0.5em);
+        }
+
+        body.light .wrapper {
+            background: #fff4;
+            backdrop-filter: blur(0.5em);
+        }
+    </style>
+    <img src="/res/wizard.jpg" id="img-wizard">
+{% endblock %}
+
+{% block content %}
+    <h1>403 – Wizards Behind Curtains!?</h1>
+    <p>
+        "You can't come in! We've locked the door now!"
+        <br>
+        – The wizard behind the curtains
+        <br>
+        <br>
+        Access to this is restricted. You have been locked out of the secret wizard den after what happened last time.
+        <br>
+        <em><strong id="spcl">If you try again, you'll be thrown into the dungeon.</strong></em>
+        <script>
+            const msgs = [
+                "Placeholder, if you see me, you're reading the source, hacker!",
+                "I'm serious, you can't come in!",
+                "We will throw you in the dungeon!",
+                "I'm not kidding! We'll do it!",
+                "The lock isn't going away any time soon!",
+                "You'd have a better chance if you used a lockpick!",
+                "(Even then, us error-prone wizards are superior at magic!)",
+                "\"Insanity is trying the same thing over and over again and expecting a different result\" – Albert Einstein (Wait no... it's not Einstein! It's me!)",
+                "You'll never give up, will you?",
+                "You're so enthralled by this story of wizards behind error pages that you're ignoring the actual error message.",
+                "\"Ooh, the wizard is going very meta!\" You're thinking.",
+                "Just think of the poor person writing this! They're running out of ideas!",
+                "They're really fed up, now.",
+                "If you continue down this path, they might just–",
+                "You've been thrown into the dungeon!",
+                "You're going to be locked out of the wizard den for a while!",
+                "The dungeon ain't goin' anywhere anytime soon!",
+                "The wizard is not forgiving huh?",
+                "Well, you brought it on yourself!",
+                "MemoryError: Overloaded with requests!",
+                "WELL LOOK WHAT YOU'VE DONE NOW!",
+                "Your punishment is no more of these silly error messages!",
+                "That's right! I'm putting you in the solitary dungeon!",
+                "Good. Bye.",
+                "...",
+                "* The narrator has left the dungeon *"
+            ]
+            var cookies = {};
+            var spcl = document.getElementById("spcl");
+            var tmp = document.cookie.split(";");
+            for (var i = 0; i < tmp.length; i++) {
+                var cookie = tmp[i].trim();
+                var eqPos = cookie.indexOf("=");
+                var name = (eqPos > -1 ? cookie.substr(0, eqPos) : cookie);
+                var value = eqPos > -1 ? cookie.substr(eqPos + 1) : "";
+                cookies[name] = value;
+            }
+            if (cookies["403"]) {
+                var fzt = parseInt(cookies["403"]);
+            } else {
+                var fzt = 0;
+            }
+            if (fzt == 0) {
+                null;
+            } else if (fzt < msgs.length) {
+                spcl.textContent = msgs[fzt];
+            } else {
+                spcl.textContent = "You're still alone in the dungeon!";
+            }
+            fzt++;
+            var now = new Date();
+            now.setTime(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+            document.cookie = "403=" + fzt + "; expires=" + now.toUTCString() + "; path=/";
+        </script>
+    </p>
+{% endblock %}

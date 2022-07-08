@@ -1,0 +1,40 @@
+{% extends "template.html.jinja" %}
+
+{% block title %} Order Menu Item {% endblock %}
+
+{% block content %}
+    {% if food %}
+        <div class="order-item" id="{{ food.id }}" food="{{ food.item }}">
+            <img class="order-item-image" src="{{ food.img }}" alt="">
+            <span class="order-item-name">{{ food.item }}</span>
+            <br>
+            <span class="order-item-price">${{ food.price|round(2) }}</span>
+            <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.number.label }} {{ form.number(size=1) }}
+                {% for error in form.number.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                {{ form.foodname(size=3) }}
+                {% for error in form.foodname.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                {{ form.submit() }}
+            </p>
+            <p>
+                <span class="order-item-desc">{{ food.description }}</span>
+            </p>
+
+        </div>
+        <div class="order-sep"></div>
+    {% else %}
+        <h1>Oops!</h1>
+        <p>
+            This page hasn't loaded properly. Please refresh.
+        </p>
+        <span class="subtxt">
+            If this problem persists, please contact the site administrator.
+        </span>
+    {% endif %}
+{% endblock %}
