@@ -15,7 +15,8 @@ def init_food_table():
     app.logger.debug(f"Got: {menu}")
     if len(menu) < 2:
         app.logger.info('Reading menu file...')
-        filePath = os.path.join('res','menu.csv')
+        filePath = os.path.join(app.root_path, 'res','menu.csv')
+        app.logger.debug(f"filepath is: {filePath}")
         reader = csv.DictReader(open(filePath))
         app.logger.info('Inserting menu items from menu.csv to Food model table...')
         for row in reader:

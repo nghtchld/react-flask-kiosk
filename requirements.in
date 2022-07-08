@@ -1,11 +1,14 @@
 # To generate requirements.txt
-# python3 -m piptools compile --output-file requirements.txt requirements.in
-# pip install  flask flask-login flask-migrate flask-sqlalchemy flask-wtf pip-tools python-dotenv
+# py -m piptools compile --output-file requirements.txt requirements.in
+# pip install  email-validator flask flask-login flask-migrate flask-sqlalchemy flask-wtf pip-tools python-dotenv setuptools wheel
 # python>=3.9.7
+email-validator>=1.2.1
 Flask>=2.1.2
 Flask-Login>=0.6.1
 Flask-Migrate>=3.1.0
 Flask-SQLAlchemy>=2.5.1
 Flask-WTF>=1.0.1
-pip-tools>=6.7.0
+pip-tools>=6.8.0
 python-dotenv>=0.20.0
+setuptools>=57.4.0
+wheel>=0.37.1

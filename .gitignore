@@ -5,8 +5,8 @@ scratch.py
 
 # VS Code
 .vscode/
-.bat
-.db
+*.bat
+*.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

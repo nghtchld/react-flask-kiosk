@@ -16,6 +16,10 @@ colorama==0.4.5
     # via
     #   build
     #   click
+dnspython==2.2.1
+    # via email-validator
+email-validator==1.2.1
+    # via -r requirements.in
 flask==2.1.2
     # via
     #   -r requirements.in
@@ -35,6 +39,8 @@ flask-wtf==1.0.1
     # via -r requirements.in
 greenlet==1.1.2
     # via sqlalchemy
+idna==3.3
+    # via email-validator
 importlib-metadata==4.12.0
     # via flask
 itsdangerous==2.1.2
@@ -54,7 +60,7 @@ packaging==21.3
     # via build
 pep517==0.12.0
     # via build
-pip-tools==6.7.0
+pip-tools==6.8.0
     # via -r requirements.in
 pyparsing==3.0.9
     # via packaging
@@ -73,7 +79,9 @@ werkzeug==2.1.2
     #   flask
     #   flask-login
 wheel==0.37.1
-    # via pip-tools
+    # via
+    #   -r requirements.in
+    #   pip-tools
 wtforms==3.0.1
     # via flask-wtf
 zipp==3.8.0
