@@ -1,5 +1,7 @@
-# Restaurant Kiosk: a Flask Web App
-This repo contains a [Flask](https://palletsprojects.com/p/flask/) web application with an [sqlite](https://sqlite.org/) Dev database using flask-sqlalchemy classes. It broadly follows the [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).
+# Restaurant Kiosk: a React front-end Flask back-end (api) Web App
+This repo contains a [Flask](https://palletsprojects.com/p/flask/) web application with an [sqlite](https://sqlite.org/) dev database using flask-sqlalchemy Classes. It broadly follows the [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).
+This fork adds React.js for the front end development and uses more resources from [Miguel Grinberg](https://blog.miguelgrinberg.com/) as well as other React.js tutorials;
+
 # Features
 - Working flask/jinja website with templates (HTML, JS, CSS)
 - Working flask-sqlalchemy defined sqlite (dev) database setup with initial data insertion
@@ -22,11 +24,18 @@ Up to here - see current work plan section, below:
 https://docs.microsoft.com/en-us/azure/app-service/quickstart-python?tabs=flask%2Cwindows%2Cazure-cli%2Cvscode-deploy%2Cdeploy-instructions-azportal%2Cterminal-bash%2Cdeploy-instructions-zip-azcli&pivots=python-framework-flask
 
 # Installation
+## Install npm and create a project template
+`npx create-react-app react-flask-app`
+`cd react-flask-app`
+
+## Git clone this repo into subfolder `kiosk-app`
+
 ## Use venv for virtual environment setup
-py -m venv --prompt "flask-kiosk" --upgrade-deps c:\Users\USERNAME\.venv\flask-kiosk
+`cd into\the\kiosk-app\folder`
+`py -m venv venv --upgrade-deps`
 
 ## Activate virtual env and generate a better requirements.txt with pip-tools
-`C:\Users\USERNAME\.venv\flask-kiosk\Scripts\activate.bat`
+`.\kiosk-app\venv\Scripts\activate.bat`
 
 `pip install -r requirements.txt`
 
@@ -51,6 +60,11 @@ Before running the flask app you need to create and initialise the database.
 1. run flask db init (creates a database and sets up migrations)
 2. run flask db migrate (creates the upgrade script)
 3. run flask db upgrade (upgrades the database to the latest version)
+
+# Running the front and back end apps
+from `.\kiosk-app\`
+`yarn start` Starts React.js front end. Confirm it is running at: http://localhost:3000
+`yarn start-kiosk` Starts Flask back end.
 
 # Licence
 This project is licenced under the BSD 3-Clause licence. A full copy of this licene is in the `LICENCE` file.

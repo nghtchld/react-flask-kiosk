@@ -3,6 +3,7 @@ from kiosk import db
 
 import os
 import sys
+import time
 from datetime import datetime
 from collections import namedtuple
 from flask import render_template, redirect, make_response, flash, url_for, session, send_from_directory, request
@@ -46,6 +47,11 @@ def index():
     app.logger.debug(f"/index username is: {username}")
     flash('Test FLASH message!')
     return render_template("index.html.jinja", title="Home", username=username)
+
+# React.js front end test route
+@app.route('/time')
+def get_current_time():
+    return {'time': time.time()}
 
 
 @app.route('/register', methods=["GET", "POST"])
