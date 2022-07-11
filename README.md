@@ -12,11 +12,15 @@ This fork adds React.js for the front end development and uses more resources fr
 - Working logging uses wrappers and decorators for functions
     see https://towardsdatascience.com/using-wrappers-to-log-in-python
 - Working Flash messages on all templates
+- Working Demo React.js front end using demo (docker) Microblog app
 Up to here - see current work plan section, below:
+- TODO Replace Microblog demo app with Kiosk app
 - TODO Ordering system using flask-sqlalchemy Classes
 - TODO Menu item customisation on order
 - TODO Receipt prodcution with Tax and Tip
 - TODO Admin Panel (Ability to create discounts, Foods and customisations )
+- TODO Add SMTP server for sending emails (see below link for needed .env vars)
+    https://blog.miguelgrinberg.com/post/the-react-mega-tutorial-chapter-5-connecting-to-a-back-end
 - TODO add Unit testing: https://realpython.com/python-testing/
     https://code.visualstudio.com/docs/python/testing
 - TODO Containerise (Docker): https://code.visualstudio.com/docs/containers/quickstart-python
@@ -61,6 +65,8 @@ Before running the flask app you need to create and initialise the database.
 2. run flask db migrate (creates the upgrade script)
 3. run flask db upgrade (upgrades the database to the latest version)
 
+# TEMP TODO install demo Microblog app in a Docker for dev of React
+https://blog.miguelgrinberg.com/post/the-react-mega-tutorial-chapter-5-connecting-to-a-back-end
 # Running the front and back end apps
 from `.\kiosk-app\`
 `yarn start` Starts React.js front end. Confirm it is running at: http://localhost:3000
