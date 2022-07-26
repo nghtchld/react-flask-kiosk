@@ -77,3 +77,8 @@ code {
   margin-bottom: 10px;
   text-align: right;
 }
+
+.InputField {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

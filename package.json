@@ -16,6 +16,13 @@
     "serve": "^13.0.4",
     "web-vitals": "^2.1.4"
   },
+  "resolutions": {
+    "autoprefixer": "10.4.5"
+  },
+  "resolutionsComments": {
+    "//": ["added above to fix deprecation warning with autoprefixer: 10.4.6+",
+  "bootstrap@5.2+ will fix this so can remove after upgrade"]
+  }, 
   "scripts": {
     "start": "react-scripts start",
     "start-kiosk": "venv\\Scripts\\activate && flask run --no-debugger",

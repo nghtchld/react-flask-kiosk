@@ -56,6 +56,15 @@ a root `.env` file is needed by `/kiosk/config.py` for at least a SALT (> 8 char
     SALT=must_have_a_salt_more_than_8_chrs_long
     SECRET_KEY=
     PORT=
+for email functions using a free SendGrid account. https://app.sendgrid.com/guide/integrate/langs/python 
+- add Auth later, false for now
+DISABLE_AUTH=true
+MAIL_SERVER=smtp.sendgrid.net
+MAIL_PORT=587
+MAIL_USE_TLS=true
+MAIL_USERNAME=apikey    # <-- this is the literal word "apikey"
+MAIL_PASSWORD=          # <-- your SendGrid API key here
+MAIL_DEFAULT_SENDER=reactjs@nghtchld.com    # <-- the sender email address you'd like to use
 
 ## Initialise the database
 The app uses the flask-migrate package and so the database schema is under Alembic control. The Alembic migration scripts are in the `/migrations` folder.
@@ -67,6 +76,10 @@ Before running the flask app you need to create and initialise the database.
 
 # TEMP TODO install demo Microblog app in a Docker for dev of React
 https://blog.miguelgrinberg.com/post/the-react-mega-tutorial-chapter-5-connecting-to-a-back-end
+`docker-compose up -d`
+`docker-compose run --rm microblog-api bash -c "flask fake users 10"`
+`docker-compose run --rm microblog-api bash -c "flask fake posts 100"`
+
 # Running the front and back end apps
 from `.\kiosk-app\`
 `yarn start` Starts React.js front end. Confirm it is running at: http://localhost:3000
