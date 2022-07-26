@@ -150,17 +150,27 @@ def edit_profile():
 
 @app.route("/cart")
 def cart():
-    # app.logger.debug('CART TEST')
-    # Temporary
+    app.logger.debug('CART TEST')
+    # # Temporary
     app.logger.info("/cart defining namedtuple.")
-    Item = namedtuple('Item','foodID, name, price, description, image, options')
-    cart = [
-        Item("1", "Chicken", 10, "White meat", "/res/default.png", {}),
-        Item("2", "Beef", 20, "Red meat", "/res/default.png", {}),
-        Item("3", "Pork", 30, "Other white meat", "/res/default.png", {}),
-        Item("4", "Fish", 40, "Sea meat", "/res/default.png", {})
-    ]
-    return render_template("cart.html.jinja", title="Cart", order=cart)
+    Item = namedtuple('Item', 'line_no, name, amount, price, default_image') # , description, image, options')
+    # cart = [
+    #     Item("1", "Chicken", 10, "White meat", "/res/default.png", {}),
+    #     Item("2", "Beef", 20, "Red meat", "/res/default.png", {}),
+    #     Item("3", "Pork", 30, "Other white meat", "/res/default.png", {}),
+    #     Item("4", "Fish", 40, "Sea meat", "/res/default.png", {})
+    # ]
+    order = []
+    item_total = 0
+    cost_total = 0
+    for i,line in enumerate(session['order']):
+        order.append(Item(
+            str(i+1), line['item'], line['number'], line['cost'], "/res/default.png"
+        ))
+        cost_total += float(line['cost'])
+        item_total += int(line['number'])
+    order.append(Item('','',str(item_total),str(cost_total), "/res/default.png"))
+    return render_template("cart.html.jinja", title="Cart", order=order)
 
 
 @app.route("/menu")
@@ -182,21 +192,34 @@ def menu_item(itemname):
     """
     Details of the menu item with number to order selection form.
     """
+    if session['order'] is None:
+        session['order'] =[]
+        app.logger.debug(f"initial order is: empty list ({session['order']})")
+    else:
+        app.logger.debug(f"initial order is:{session['order']}")
+    
     app.logger.info(f"Selecting item from db: '{itemname}'...")
     food = Food.query.filter_by(item=itemname).first_or_404()
     if not food:
         app.logger.debug(f"Sorry! Sold out of '{itemname}. Please select a different item.")
+        flash(f"Sorry! Sold out of '{itemname}. Please select a different item.")
+        return redirect(url_for('menu'))
     app.logger.info(f"Retrieved item from db")#: '{food}', name: {food.item}.")
     #title = ' '.join('Order your', food.item)
+    
+
 
     form = MenuItemForm(default=itemname)
     if form.validate_on_submit():
         name = food.item
         number = form.number.data
-        price = round(food.price, 2)
+        price = food.price
         app.logger.debug(f"name: {name}, number: {number}, price: {price}")
-        cost = number * price
+        cost = round(number * price, 2)
         flash(f"{number} {name}s added to your cart. That will cost ${cost}.")
+        session['order'].append({'item': food.item, 'number': form.number.data, 'cost': float(cost)})
+        app.logger.debug(f"final order is: {session['order']}")
+        return redirect(url_for('menu'))
     return render_template("menu_item.html.jinja", title="Order Menu Item", form=form, food=food)
     pass
 

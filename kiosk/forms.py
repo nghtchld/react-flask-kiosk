@@ -33,17 +33,15 @@ class RegisterForm(FlaskForm):
 
     @log_func(entering, exiting)
     def validate_username(self, username):
-        excluded_chars = " ,*?!'^+%&/()=}][{$#/\\\""
-        for char in self.username.data:
-            if char in excluded_chars:
-                raise ValidationError(
-                    f"Character {char} is not allowed in username.")
-
-    @log_func(entering, exiting)
-    def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
+        else:
+            excluded_chars = " ,*?!'^+%&/()=}][{$#/\\\""
+            for char in username.data:
+                if char in excluded_chars:
+                    raise ValidationError(
+                        f"Character {char} is not allowed in username.")
 
     @log_func(entering, exiting)
     def validate_email(self, email):

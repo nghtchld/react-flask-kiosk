@@ -206,6 +206,16 @@ body.light > .nav a:hover {
     transform: scale(1.1);
 }
 
+.order-item-amount {
+    /*display: flex;
+    */
+    align-items: right;
+    /* justify-content: space-between;
+    */
+    padding: 0.5rem;
+    transition: 0.2s ease-in-out;
+}
+
 .order-sep:not(:last-child) {
     border-bottom: 0.1rem solid var(--background-lighter);
 }
