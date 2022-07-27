@@ -7,8 +7,6 @@ from kiosk import db
 from kiosk import login
 
 from kiosk.utils import log_func, entering, exiting
-# from kiosk.utils import log_debug
-# log_debug()
 
 # flask-migrate alembic in use to manage db changes
 # Use cmdline >flask db migrate -m "short message"

@@ -1,6 +1,18 @@
     <table>
-        <tr valign="top">
-            <td>{{ orders.customer.username }}</td>
-            <td> ordered: <br>{{ orders.orders }}</td>
-        </tr>
+        {% for order in orders %}
+            <tr valign="top">
+                <td>{{ order.when }}</td>
+                <td>
+                    <table>
+                        {% for item in order.lines %}
+                        <tr>
+                            <td>{{ item.item }}</td>
+                            <td>{{ item.number }}</td>
+                            <td>{{ item.cost }}<p></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
     </table>

@@ -3,7 +3,28 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-Placeholder page...
-
-Will show receipt with details, subtotal(s), taxes and fees applied, and grand total of orders for current session.
+     
+    {% if cart %}
+        {% include '_cart_list.html.jinja'%}
+    {% else %}
+        <h1>Oops!</h1>
+        <p>
+            You cart is empty of has gone missing! Please refresh the page to find it...
+        </p>
+        <span class="subtxt">
+            If this problem persists, please contact the site administrator.
+        </span>
+    {% endif %}
+    <p>
+    {% if total %}
+        {% include '_total.html.jinja' %}
+    {% else %}
+        
+    {% endif %}   
+    </p>
+    <div>
+        <span>Thank you for ordering with Mex & Co.
+        <p>Make another Order anytime -> <a href="{{ url_for('menu') }}"">Menu</a></p>
+        </span>
+    </div>
 {% endblock %}

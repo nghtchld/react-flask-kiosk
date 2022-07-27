@@ -24,4 +24,5 @@
             If this problem persists, please contact the site administrator.
         </span>
     {% endif %}
+    {% if cart %}Click <a href="{{url_for('cart')}}">your Cart</a> to finalise your Order.{% endif%}
 {% endblock %}

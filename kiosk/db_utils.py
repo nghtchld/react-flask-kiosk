@@ -1,14 +1,11 @@
 import os
 import csv
-import logging as log
-
+from flask import session
 from flask_login import current_user
 
 from kiosk import app, db
 from kiosk.models import Food, User, Orders
 from kiosk.utils import log_func, entering, exiting
-# from kiosk.utils import log_debug
-# log_debug()
 
 @log_func(entering, exiting)
 def init_food_table():
@@ -33,7 +30,23 @@ def init_food_table():
             db.session.commit()
     else:
         app.logger.debug(f"Food model table contains: {len(menu)} items.")
+        pass
 
+@log_func(entering, exiting)
+def init_user_table():
+    # Make sure there is the default 'Stranger' user in the main.user TABLE
+    app.logger.debug(f"Checking User table for default user...")
+    stranger_user = User.query.filter_by(username='Stranger').first()
+    app.logger.debug(f"Got: {stranger_user}")
+    if stranger_user is None:
+        app.logger.info('Adding Stranger user...')
+        u = User(username='Stranger', email='none@none.none', password='')
+        u.id = 0
+        db.session.add(u)
+        db.session.commit()
+    else:
+        app.logger.debug(f"User table contains: {stranger_user} items.")
+        pass
 
 @log_func(entering, exiting)
 def register_user_in_db(form):
@@ -45,9 +58,8 @@ def register_user_in_db(form):
     db.session.commit()
     #return render_template('register.html.jinja', form = form)
 
-
 @log_func(entering, exiting)
-def save_order_in_db(form, session):
+def save_order_in_db():
     orders = str(session['orders'])
     if current_user.is_authenticated:
         username = current_user.username
@@ -60,3 +72,5 @@ def save_order_in_db(form, session):
     o = Orders(orders=orders, user_id=user_id, session_id=session_id)
     db.session.add(o)
     db.session.commit()
+
+    return o.id

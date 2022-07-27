@@ -4,20 +4,19 @@
 
 {% block content %}
     <h1>Welcome {{ user.username }}!</h1>
-        {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}<p>
-        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-        {% if user == current_user %}
-            <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+        <p>{% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
+        <p>{% if user.about_me %}<p>{{ user.about_me }}</p>
+        {% else %}<p>...hasn't told us anything about themselves. 
+            {% if user == current_user %}
+                <p>Add or edit your about me by <a href="{{ url_for('edit_profile') }}">Editing your Profile</a></p>
+            {% endif %}
         {% endif %}
+    <p></p>
         
-        This is your user page. It will* contain a list of your orders and information about your Account!
-    </p>
-    <span class="subtxt">
-        * When I get around to implementing it! :) It will look something like...
-    </span>
     {% if orders %}
-        {% for order in orders %}
-            {% include '_order.html.jinja' %}
-        {% endfor %}
+        {% include '_order.html.jinja' %}
+    {% else %}
+        <p>Oh, noes! You don't have any orders! </p>
+        <p>Go to our wonderful <a href="{{ url_for('menu') }}">Menu</a> and get something to eat! </p>
     {% endif %}
 {% endblock %}
