@@ -28,7 +28,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-    orders = db.relationship('Order', backref='customer', lazy='dynamic')
+    orders = db.relationship('Orders', backref='customer', lazy='dynamic')
 
     def __init__(self, username, email, password):
         self.username = username
@@ -58,16 +58,16 @@ class Session(db.Model):
         return f'{self.id}'
 
 
-class Order(db.Model):
+class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    order = db.Column(db.String(1024), index=False, unique=False)
+    orders = db.Column(db.String(1024), index=False, unique=False)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     session_id = db.Column(db.Integer, db.ForeignKey('session.id'))
 
     def __repr__(self):
-        order = self.order
-        order_dict = {'Order': order}
+        orders = self.orders
+        order_dict = {'Orders': orders}
         return json.dumps(order_dict)
     
     @log_func(entering, exiting)

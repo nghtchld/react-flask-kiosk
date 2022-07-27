@@ -16,7 +16,7 @@ This fork adds React.js for the front end development and uses more resources fr
 Up to here - see current work plan section, below:
 - TODO Replace Microblog demo app with Kiosk app
 - TODO Ordering system using flask-sqlalchemy Classes
-- TODO Menu item customisation on order
+- TODO Menu item customisation on orders
 - TODO Receipt prodcution with Tax and Tip
 - TODO Admin Panel (Ability to create discounts, Foods and customisations )
 - TODO Add SMTP server for sending emails (see below link for needed .env vars)
@@ -58,13 +58,13 @@ a root `.env` file is needed by `/kiosk/config.py` for at least a SALT (> 8 char
     PORT=
 for email functions using a free SendGrid account. https://app.sendgrid.com/guide/integrate/langs/python 
 - add Auth later, false for now
-DISABLE_AUTH=true
-MAIL_SERVER=smtp.sendgrid.net
-MAIL_PORT=587
-MAIL_USE_TLS=true
-MAIL_USERNAME=apikey    # <-- this is the literal word "apikey"
-MAIL_PASSWORD=          # <-- your SendGrid API key here
-MAIL_DEFAULT_SENDER=reactjs@nghtchld.com    # <-- the sender email address you'd like to use
+    DISABLE_AUTH=true
+    MAIL_SERVER=smtp.sendgrid.net
+    MAIL_PORT=587
+    MAIL_USE_TLS=true
+    MAIL_USERNAME=apikey    # <-- this is the literal word "apikey"
+    MAIL_PASSWORD=          # <-- your SendGrid API key here
+    MAIL_DEFAULT_SENDER=reactjs@nghtchld.com    # <-- the sender email address you'd like to use
 
 ## Initialise the database
 The app uses the flask-migrate package and so the database schema is under Alembic control. The Alembic migration scripts are in the `/migrations` folder.
@@ -92,7 +92,7 @@ This project is licenced under the BSD 3-Clause licence. A full copy of this lic
 TODO Ordering system using flask-sqlalchemy Classes
 ## Needed
 * Food details page of form 'menu\<item>'
-* Dropdown number to order selection form -> displayed on food details page
+* Dropdown number to orders selection form -> displayed on food details page
 * Do we then have to write the item selection immediately to the db?
 ** or can we store in 'session' and if so how?
 ** and then when do we write to the db?

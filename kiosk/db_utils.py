@@ -1,8 +1,11 @@
 import os
 import csv
 import logging as log
+
+from flask_login import current_user
+
 from kiosk import app, db
-from kiosk.models import Food, User
+from kiosk.models import Food, User, Orders
 from kiosk.utils import log_func, entering, exiting
 # from kiosk.utils import log_debug
 # log_debug()
@@ -41,3 +44,19 @@ def register_user_in_db(form):
     db.session.add(u)
     db.session.commit()
     #return render_template('register.html.jinja', form = form)
+
+
+@log_func(entering, exiting)
+def save_order_in_db(form, session):
+    orders = str(session['orders'])
+    if current_user.is_authenticated:
+        username = current_user.username
+        u = User.query.filter_by(username=username).first()
+        user_id = u.id
+    else:
+        username = "Stranger"
+        user_id = 0        
+    session_id = user_id
+    o = Orders(orders=orders, user_id=user_id, session_id=session_id)
+    db.session.add(o)
+    db.session.commit()

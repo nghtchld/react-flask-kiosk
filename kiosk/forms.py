@@ -72,3 +72,7 @@ class MenuItemForm(FlaskForm):
     number = SelectField('Number', choices=[i for i in range(10)], default=1, coerce=int)
     foodname = HiddenField()
     submit = SubmitField('Submit')
+
+
+class CheckoutSubmitForm(FlaskForm):
+    submit = SubmitField('Checkout')

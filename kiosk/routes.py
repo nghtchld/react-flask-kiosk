@@ -10,9 +10,9 @@ from flask import render_template, redirect, make_response, flash, url_for, sess
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
-from kiosk.forms import LoginForm, RegisterForm, EditProfileForm, MenuItemForm
+from kiosk.forms import CheckoutSubmitForm, LoginForm, RegisterForm, EditProfileForm, MenuItemForm
 from kiosk.models import User, Food
-from kiosk.db_utils import init_food_table, register_user_in_db
+from kiosk.db_utils import init_food_table, register_user_in_db, save_order_in_db
 from kiosk.config import Config
 
 from kiosk.utils import log_func, entering, exiting
@@ -124,10 +124,10 @@ def userpage(username):
     # TODO add list of user's orders, favorites etc using a _sub template
     # below are temp placeholder 'orders' by user 'user'
     orders = [
-        {'customer': user, 'order': 'Test order #1'},
-        {'customer': user, 'order': 'Test order #2'}
+        {'customer': user, 'orders': 'Test orders #1'},
+        {'customer': user, 'orders': 'Test orders #2'}
     ]
-    # sample actual order code might be like:
+    # sample actual orders code might be like:
     # orders = user.orders.all()
     return render_template('userpage.html.jinja', user=user, orders=orders)
 
@@ -148,29 +148,30 @@ def edit_profile():
     return render_template('edit_profile.html.jinja', title='Edit Profile', form=form)
 
 
-@app.route("/cart")
+@app.route('/cart' , methods=['GET', 'POST'])
 def cart():
-    app.logger.debug('CART TEST')
-    # # Temporary
     app.logger.info("/cart defining namedtuple.")
     Item = namedtuple('Item', 'line_no, name, amount, price, default_image') # , description, image, options')
-    # cart = [
-    #     Item("1", "Chicken", 10, "White meat", "/res/default.png", {}),
-    #     Item("2", "Beef", 20, "Red meat", "/res/default.png", {}),
-    #     Item("3", "Pork", 30, "Other white meat", "/res/default.png", {}),
-    #     Item("4", "Fish", 40, "Sea meat", "/res/default.png", {})
-    # ]
-    order = []
+
+    cart = []
     item_total = 0
     cost_total = 0
-    for i,line in enumerate(session['order']):
-        order.append(Item(
+    for i,line in enumerate(session['orders']):
+        cart.append(Item(
             str(i+1), line['item'], line['number'], line['cost'], "/res/default.png"
         ))
         cost_total += float(line['cost'])
         item_total += int(line['number'])
-    order.append(Item('','',str(item_total),str(cost_total), "/res/default.png"))
-    return render_template("cart.html.jinja", title="Cart", order=order)
+    total = (Item('','',str(item_total),str(cost_total), ''))
+
+    app.logger.info("/cart submitting cart to checkout page.")
+    form = CheckoutSubmitForm()
+    if form.validate_on_submit():
+        save_order_in_db(form, session)
+        #flash('Your changes have been saved.')
+        return redirect(url_for('checkout'))
+    
+    return render_template("cart.html.jinja", title="Cart", cart=cart, total=total, form=form)
 
 
 @app.route("/menu")
@@ -190,13 +191,13 @@ def menu():
 @app.route("/menu/<itemname>", methods=["GET", "POST"])
 def menu_item(itemname):
     """
-    Details of the menu item with number to order selection form.
+    Details of the menu item with number to orders selection form.
     """
-    if session['order'] is None:
-        session['order'] =[]
-        app.logger.debug(f"initial order is: empty list ({session['order']})")
+    if session['orders'] is None:
+        session['orders'] =[]
+        app.logger.debug(f"initial orders is: empty list ({session['orders']})")
     else:
-        app.logger.debug(f"initial order is:{session['order']}")
+        app.logger.debug(f"initial orders is:{session['orders']}")
     
     app.logger.info(f"Selecting item from db: '{itemname}'...")
     food = Food.query.filter_by(item=itemname).first_or_404()
@@ -205,7 +206,7 @@ def menu_item(itemname):
         flash(f"Sorry! Sold out of '{itemname}. Please select a different item.")
         return redirect(url_for('menu'))
     app.logger.info(f"Retrieved item from db")#: '{food}', name: {food.item}.")
-    #title = ' '.join('Order your', food.item)
+    #title = ' '.join('Orders your', food.item)
     
 
 
@@ -217,11 +218,17 @@ def menu_item(itemname):
         app.logger.debug(f"name: {name}, number: {number}, price: {price}")
         cost = round(number * price, 2)
         flash(f"{number} {name}s added to your cart. That will cost ${cost}.")
-        session['order'].append({'item': food.item, 'number': form.number.data, 'cost': float(cost)})
-        app.logger.debug(f"final order is: {session['order']}")
+        session['orders'].append({'item': food.item, 'number': form.number.data, 'cost': float(cost)})
+        app.logger.debug(f"final orders is: {session['orders']}")
         return redirect(url_for('menu'))
-    return render_template("menu_item.html.jinja", title="Order Menu Item", form=form, food=food)
+    return render_template("menu_item.html.jinja", title="Orders Menu Item", form=form, food=food)
     pass
+
+@app.route("/checkout")
+def checkout():
+    # TODO temporary
+    return render_template("checkout.html.jinja")
+
 
 @app.route("/cart/<int:id>")
 def cartItem(id):
